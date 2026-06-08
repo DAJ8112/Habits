@@ -22,9 +22,14 @@ struct HabitListView: View {
                 } else {
                     List {
                         ForEach(habits) { habit in
-                            NavigationLink(value: habit) {
+                            // A plain Button (not NavigationLink) so there's no
+                            // disclosure chevron; the whole card is tappable.
+                            Button {
+                                path.append(habit)
+                            } label: {
                                 HabitRowView(habit: habit)
                             }
+                            .buttonStyle(.plain)
                         }
                         .onDelete(perform: deleteHabits)
                     }
@@ -107,10 +112,13 @@ struct HabitRowView: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
+                Spacer(minLength: 0)
             }
-            // Read-only recent heatmap (no onTap → taps fall through to the row link).
-            HeatmapView(source: habit, weeks: 18, cellSize: 11, spacing: 2.5)
+            // Read-only recent heatmap that fills the full card width (flexible
+            // square cells — no measurement, so it fills on every device).
+            FillHeatmapView(source: habit, weeks: 22)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 4)
     }
 }

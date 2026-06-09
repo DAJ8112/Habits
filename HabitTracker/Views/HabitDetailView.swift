@@ -75,8 +75,15 @@ struct HabitDetailView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text("History")
                 .font(.headline)
+            Text(habit.trackingType == .binary
+                 ? "Tap a day to mark it done."
+                 : "Tap a day to add one; tap past the goal to reset.")
+                .font(.caption2)
+                .foregroundStyle(.secondary)
 
-            LabeledHeatmapView(source: habit, weeks: 26)
+            LabeledHeatmapView(source: habit, weeks: 26) { day in
+                cycle(on: day)
+            }
 
             HStack {
                 Spacer()

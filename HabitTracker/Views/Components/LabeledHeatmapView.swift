@@ -1,12 +1,14 @@
 import SwiftUI
 
-/// The read-only heatmap overview with month labels across the top and weekday
-/// labels down the left, so each 7-cell column reads clearly as one Mon–Sun week.
+/// The heatmap overview with month labels across the top and weekday labels down
+/// the left, so each 7-cell column reads clearly as one Mon–Sun week.
+/// Pass `onTap` to make cells interactive (logging); omit it for a read-only view.
 struct LabeledHeatmapView: View {
     let source: HeatmapSource
     var weeks: Int = 26
     var cellSize: CGFloat = 13
     var spacing: CGFloat = 3
+    var onTap: ((Date) -> Void)? = nil
 
     private let calendar = Calendar.mondayFirst
     private let today = Calendar.mondayFirst.startOfDay(for: Date())
@@ -33,7 +35,7 @@ struct LabeledHeatmapView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: spacing) {
                     monthLabels
-                    HeatmapView(source: source, weeks: weeks, cellSize: cellSize, spacing: spacing)
+                    HeatmapView(source: source, weeks: weeks, cellSize: cellSize, spacing: spacing, onTap: onTap)
                 }
             }
             .defaultScrollAnchor(.trailing)   // start on the most recent weeks

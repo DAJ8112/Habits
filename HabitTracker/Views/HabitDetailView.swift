@@ -15,8 +15,8 @@ struct HabitDetailView: View {
                 VStack(spacing: 24) {
                     header
                     heatmapSection
-                    statsSection
                     calendarSection
+                    statsSection
                         .id("bottom")
                 }
                 .padding()

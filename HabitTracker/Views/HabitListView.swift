@@ -31,9 +31,18 @@ struct HabitListView: View {
                                 HabitRowView(habit: habit)
                             }
                             .buttonStyle(.plain)
+                            // Each habit is its own card: a rounded surface on a
+                            // clear row, with no separators and a gap between rows.
+                            .padding()
+                            .background(Color(.secondarySystemBackground))
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                            .listRowSeparator(.hidden)
+                            .listRowBackground(Color.clear)
+                            .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
                         }
                         .onDelete(perform: deleteHabits)
                     }
+                    .listStyle(.plain)
                 }
             }
             .navigationTitle("Habits")

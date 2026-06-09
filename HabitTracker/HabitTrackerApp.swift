@@ -3,6 +3,9 @@ import SwiftData
 
 @main
 struct HabitTrackerApp: App {
+    // User's chosen appearance (System/Light/Dark). Applied app-wide below.
+    @AppStorage(AppAppearance.storageKey) private var appearanceRaw = AppAppearance.system.rawValue
+
     var body: some Scene {
         WindowGroup {
             HabitListView()
@@ -11,6 +14,9 @@ struct HabitTrackerApp: App {
                     // SEED_SAMPLE_DATA flag. No-op in normal use.
                     SampleData.seedIfNeeded(sharedModelContainer.mainContext)
                 }
+                // Force the chosen scheme app-wide (incl. sheets). `nil` for
+                // System, which falls back to the iOS appearance.
+                .preferredColorScheme(AppAppearance(rawValue: appearanceRaw)?.colorScheme)
         }
         // Sets up the on-device database (SwiftData) for our two models.
         // SwiftData creates/loads the store automatically and injects a

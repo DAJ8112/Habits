@@ -8,6 +8,7 @@ struct HabitListView: View {
     @Query(sort: \Habit.sortOrder) private var habits: [Habit]
     @State private var showingAdd = false
     @State private var showingWidgetPreview = false
+    @State private var showingSettings = false
     @State private var path: [Habit] = []
 
     var body: some View {
@@ -44,6 +45,11 @@ struct HabitListView: View {
                         } label: {
                             Label("Widget preview", systemImage: "rectangle.3.group")
                         }
+                        Button {
+                            showingSettings = true
+                        } label: {
+                            Label("Settings", systemImage: "gearshape")
+                        }
                     } label: {
                         Image(systemName: "ellipsis.circle")
                     }
@@ -64,6 +70,9 @@ struct HabitListView: View {
             }
             .sheet(isPresented: $showingWidgetPreview) {
                 WidgetPreviewView()
+            }
+            .sheet(isPresented: $showingSettings) {
+                SettingsView()
             }
         }
         .onAppear(perform: maybeAutoOpen)

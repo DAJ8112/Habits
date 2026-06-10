@@ -54,20 +54,14 @@ struct HabitDetailView: View {
 
     private var statsSection: some View {
         let color = Color(hex: habit.colorHex)
-        let rate = HabitStats.completionRate(for: habit)
         return LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-            StatCard(title: "Current streak",
+            StatCard(title: "Streak",
                      value: "\(HabitStats.currentStreak(for: habit))",
-                     unit: "days", systemImage: "flame.fill", color: color)
-            StatCard(title: "Longest streak",
-                     value: "\(HabitStats.longestStreak(for: habit))",
-                     unit: "days", systemImage: "trophy.fill", color: color)
-            StatCard(title: "Completion",
-                     value: "\(Int((rate * 100).rounded()))%",
-                     unit: "of days", systemImage: "chart.pie.fill", color: color)
-            StatCard(title: "Total",
-                     value: "\(HabitStats.totalCompleted(for: habit))",
-                     unit: "days done", systemImage: "checkmark.seal.fill", color: color)
+                     unit: "days", systemImage: "flame.fill", color: color,
+                     footnote: "Best \(HabitStats.longestStreak(for: habit))")
+            StatCard(title: "This month",
+                     value: "\(HabitStats.completedThisMonth(for: habit))",
+                     unit: "days", systemImage: "calendar", color: color)
         }
     }
 

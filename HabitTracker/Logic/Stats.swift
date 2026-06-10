@@ -67,25 +67,15 @@ enum HabitStats {
         return longest
     }
 
-    // MARK: Totals & rate
+    // MARK: This month
 
-    /// Total number of days the goal was met.
-    static func totalCompleted(for habit: Habit) -> Int {
-        completedDays(for: habit).count
+    /// Number of goal-met days in the calendar month containing `today`.
+    static func completedThisMonth(for habit: Habit, asOf today: Date = Date()) -> Int {
+        completedThisMonth(completedDays: completedDays(for: habit), asOf: today)
     }
 
-    /// Fraction (0...1) of days completed since the habit's first activity.
-    static func completionRate(for habit: Habit, asOf today: Date = Date()) -> Double {
+    static func completedThisMonth(completedDays: Set<Date>, asOf today: Date = Date()) -> Int {
         let calendar = Calendar.current
-        let completed = completedDays(for: habit)
-
-        let entryDays = habit.entries.map { calendar.startOfDay(for: $0.date) }
-        guard let earliest = (completed.union(entryDays)).min() else { return 0 }
-
-        let start = min(earliest, calendar.startOfDay(for: habit.createdAt))
-        let end = calendar.startOfDay(for: today)
-        let span = (calendar.dateComponents([.day], from: start, to: end).day ?? 0) + 1
-        guard span > 0 else { return 0 }
-        return Double(completed.count) / Double(span)
+        return completedDays.filter { calendar.isDate($0, equalTo: today, toGranularity: .month) }.count
     }
 }

@@ -37,6 +37,25 @@ struct StatsTests {
         #expect(HabitStats.longestStreak(completedDays: []) == 0)
     }
 
+    @Test func completedThisMonthCountsOnlyCurrentMonth() {
+        // Build explicit dates so the test doesn't drift near month boundaries.
+        func date(_ year: Int, _ month: Int, _ day: Int) -> Date {
+            calendar.date(from: DateComponents(year: year, month: month, day: day))!
+        }
+        let reference = date(2026, 6, 15)
+        let days: Set<Date> = [
+            date(2026, 6, 3),    // June  ✓
+            date(2026, 6, 14),   // June  ✓
+            date(2026, 5, 31),   // May   ✗
+            date(2026, 7, 1),    // July  ✗
+        ]
+        #expect(HabitStats.completedThisMonth(completedDays: days, asOf: reference) == 2)
+    }
+
+    @Test func completedThisMonthOfEmptyIsZero() {
+        #expect(HabitStats.completedThisMonth(completedDays: [], asOf: Date()) == 0)
+    }
+
     @Test func heatmapLevelBuckets() {
         #expect(HeatmapView.level(amount: 0, goal: 8) == 0)   // nothing logged
         #expect(HeatmapView.level(amount: 1, goal: 1) == 4)   // binary complete = full

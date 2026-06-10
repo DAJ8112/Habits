@@ -7,6 +7,7 @@ struct StatCard: View {
     let unit: String
     let systemImage: String
     let color: Color
+    var footnote: String? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -22,8 +23,13 @@ struct StatCard: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+            if let footnote {
+                Text(footnote)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .padding()
         .background(Color(.secondarySystemBackground))
         .clipShape(RoundedRectangle(cornerRadius: 12))
